@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - Anonimus{% endblock %}
+
+{% block content %}
+<div class="form-section">
+    <h2>🔐 Admin Login</h2>
+    <p style="color: #666; margin-bottom: 20px;">Enter the admin password to access administrative features.</p>
+    
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control") }}
+        </div>
+        {{ form.submit(class="btn") }}
+    </form>
+    
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('index') }}" style="color: #667eea; text-decoration: none;">← Back to Questions</a>
+    </div>
+</div>
+{% endblock %}
