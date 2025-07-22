@@ -53,12 +53,12 @@ def init_db():
 
 # Forms
 class QuestionForm(FlaskForm):
-    content = TextAreaField('Question', validators=[DataRequired(), Length(min=10, max=500)], 
+    question_content = TextAreaField('Question', validators=[DataRequired(), Length(min=10, max=500)], 
                            render_kw={"placeholder": "Ask your question anonymously..."})
     submit = SubmitField('Submit Question')
 
 class CommentForm(FlaskForm):
-    content = TextAreaField('Comment', validators=[DataRequired(), Length(min=3, max=300)], 
+    comment_content = TextAreaField('Comment', validators=[DataRequired(), Length(min=3, max=300)], 
                            render_kw={"placeholder": "Add a comment..."})
     submit = SubmitField('Add Comment')
 
@@ -91,7 +91,7 @@ def index():
         question_data = []
         for question in questions:
             comments = conn.execute('''
-                SELECT content, is_admin, created_at 
+                SELECT id, content, is_admin, created_at 
                 FROM comments 
                 WHERE question_id = ? 
                 ORDER BY created_at ASC
@@ -112,7 +112,7 @@ def index():
 def submit_question():
     form = QuestionForm()
     if form.validate_on_submit():
-        content = sanitize_input(form.content.data)
+        content = sanitize_input(form.question_content.data)
         
         with get_db() as conn:
             conn.execute('INSERT INTO questions (content) VALUES (?)', (content,))
@@ -128,7 +128,7 @@ def submit_question():
 def add_comment(question_id):
     form = CommentForm()
     if form.validate_on_submit():
-        content = sanitize_input(form.content.data)
+        content = sanitize_input(form.comment_content.data)
         is_admin_comment = is_admin()
         
         with get_db() as conn:

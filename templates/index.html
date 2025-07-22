@@ -9,8 +9,8 @@
     <form method="POST" action="{{ url_for('submit_question') }}">
         {{ question_form.hidden_tag() }}
         <div class="form-group">
-            {{ question_form.content.label(class="form-label") }}
-            {{ question_form.content(class="form-control", rows="4") }}
+            {{ question_form.question_content.label(class="form-label") }}
+            {{ question_form.question_content(class="form-control", rows="4") }}
         </div>
         {{ question_form.submit(class="btn") }}
     </form>
@@ -22,24 +22,24 @@
     
     {% if question_data %}
         {% for item in question_data %}
-            <div class="question-item {% if item.question.is_done %}done{% endif %}">
+            <div class="question-item {% if item.question['is_done'] %}done{% endif %}">
                 <div class="question-header">
                     <div class="question-meta">
-                        <strong>Question #{{ item.question.id }}</strong>
-                        <span>• {{ item.question.created_at|datetime }}</span>
-                        {% if item.question.is_done %}
+                        <strong>Question #{{ item.question['id'] }}</strong>
+                        <span>• {{ item.question['created_at']|datetime }}</span>
+                        {% if item.question['is_done'] %}
                             <span style="color: #27ae60; font-weight: bold;">✅ Done</span>
                         {% endif %}
                     </div>
                     
                     {% if is_admin %}
                         <div class="admin-controls">
-                            {% if item.question.is_done %}
-                                <button class="btn btn-small btn-success" onclick="'markQuestionDone({{ item.question.id }})'">
+                            {% if item.question['is_done'] %}
+                                <button class="btn btn-small btn-success" onclick="markQuestionDone({{ item.question['id'] }})">
                                     Mark Undone
                                 </button>
                             {% else %}
-                                <button class="btn btn-small btn-success" onclick="'markQuestionDone({{ item.question.id }})'">
+                                <button class="btn btn-small btn-success" onclick="markQuestionDone({{ item.question['id'] }})">
                                     Mark Done
                                 </button>
                             {% endif %}
@@ -48,7 +48,7 @@
                 </div>
                 
                 <div class="question-content">
-                    {{ item.question.content|safe }}
+                    {{ item.question['content']|safe }}
                 </div>
                 
                 <!-- Comments Section -->
@@ -56,19 +56,19 @@
                     {% if item.comments %}
                         <h4>Comments:</h4>
                         {% for comment in item.comments %}
-                            <div class="comment-item {% if comment.is_admin %}admin{% endif %}">
-                                <div class="comment-header">
+                            <div class="comment-item {% if comment['is_admin'] %}admin{% endif %}">
+                                <div class="comment-header" style="display: flex; align-items: center; justify-content: space-between;">
                                     <div>
-                                        {% if comment.is_admin %}
+                                        {% if comment['is_admin'] %}
                                             <span class="teacher-badge">Teacher</span>
                                         {% else %}
                                             <span style="color: #666;">Anonymous</span>
                                         {% endif %}
                                     </div>
-                                    
                                     {% if is_admin %}
-                                        <form method="POST" action="{{ url_for('delete_comment', comment_id=comment.id) }}" style="display: inline;">
-                                            {{ csrf_token() }}
+                                        <form method="POST" action="{{ url_for('delete_comment', comment_id=comment['id']) }}" style="margin: 0;">
+                                             
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <button type="submit" class="btn btn-small btn-danger" onclick="return confirm('Delete this comment?')">
                                                 Delete
                                             </button>
@@ -77,11 +77,11 @@
                                 </div>
                                 
                                 <div class="comment-content">
-                                    {{ comment.content|safe }}
+                                    {{ comment['content']|safe }}
                                 </div>
                                 
                                 <div class="comment-meta">
-                                    {{ comment.created_at|datetime }}
+                                    {{ comment['created_at']|datetime }}
                                 </div>
                             </div>
                         {% endfor %}
@@ -89,11 +89,11 @@
                     
                     <!-- Add Comment Form -->
                     <div class="comment-form">
-                        <form method="POST" action="{{ url_for('add_comment', question_id=item.question.id) }}">
+                        <form method="POST" action="{{ url_for('add_comment', question_id=item.question['id']) }}">
                             {{ comment_form.hidden_tag() }}
                             <div class="form-group">
-                                {{ comment_form.content.label(class="form-label") }}
-                                {{ comment_form.content(class="form-control", rows="3") }}
+                                {{ comment_form.comment_content.label(class="form-label") }}
+                                {{ comment_form.comment_content(class="form-control", rows="3") }}
                             </div>
                             {{ comment_form.submit(class="btn") }}
                         </form>
