@@ -1,3 +1,17 @@
+# 1.0.0 (2025-07-22)
+
+
+### Bug Fixes
+
+* added package-lock file ([d318054](https://github.com/bilalstackio/anonimus/commit/d318054d60dba722b231e343f0de5cc95cf6688f))
+* github workflow release file ([0500527](https://github.com/bilalstackio/anonimus/commit/0500527f82c490c271333764081436582653bf95))
+
+
+### Features
+
+* added semantic versioning, folder restructure for python app ([cba126d](https://github.com/bilalstackio/anonimus/commit/cba126d7600ec5752b6085515ec47e04ad719108))
+* config files for ci/cd ([b2b896f](https://github.com/bilalstackio/anonimus/commit/b2b896f6dc03caf7d53ed5d746cf76654efa6d95))
+
 # 1.0.0 (2025-07-15)
 
 
