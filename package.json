@@ -1,0 +1,38 @@
+{
+  "name": "your_app_name",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "commit": "cz",
+    "release": "semantic-release"
+  },
+  "lint-staged": {
+    "*.ts?(x)": [
+      "eslint --fix"
+    ]
+  },
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.0.0",
+    "@commitlint/config-conventional": "^18.0.0",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.2",
+    "semantic-release": "^24.2.7",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.2.3",
+    "@semantic-release/commit-analyzer": "^10.0.0",
+    "@semantic-release/release-notes-generator": "^11.0.0"
+  }
+}

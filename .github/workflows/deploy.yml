@@ -1,0 +1,39 @@
+name: Deploy Flask App via FTP
+
+on:
+  release:
+    types: [published]
+
+env:
+  FTP_HOST: ${{ secrets.FTP_HOST }}
+  FTP_USER: ${{ secrets.FTP_USERNAME }}
+  FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+  LOCAL_DIR: app
+  TARGET_DIR: anonimus  # Adjust to your FTP destination directory (e.g., public_html/anonimus)
+
+jobs:
+  deploy:
+    if: ${{ github.repository != 'bilalstackio/semantic-release-starter-template' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Zip Flask App for FTP
+        run: |
+          zip -r app.zip ${{ env.LOCAL_DIR }}
+
+      - name: Upload to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ env.FTP_HOST }}
+          username: ${{ env.FTP_USER }}
+          password: ${{ env.FTP_PASS }}
+          local-dir: ${{ env.LOCAL_DIR }}/
+          server-dir: public_html/${{ env.TARGET_DIR }}/
+          exclude: |
+            **/venv/**
+            **/__pycache__/**
+            **/.env
+            **/.DS_Store
